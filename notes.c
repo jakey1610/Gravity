@@ -1,0 +1,6 @@
+(x[j][0]<=x[i][0] && x[j][0]+timeStepSize*v[j][0]>=x[i][0])
+&& (x[j][1]<=x[i][1] && x[j][1]+timeStepSize*v[j][1]>=x[i][1])
+&& (x[j][2]<=x[i][2] && x[j][2]+timeStepSize*v[j][2]>=x[i][2])
+|| (x[j][0]<=x[i][0]+timeStepSize*v[i][0] && x[j][0]+timeStepSize*v[j][0]>=x[i][0]+timeStepSize*v[i][0])
+&& (x[j][1]<=x[i][1]+timeStepSize*v[i][1] && x[j][1]+timeStepSize*v[j][1]>=x[i][1]+timeStepSize*v[i][1])
+&& (x[j][2]<=x[i][2]+timeStepSize*v[i][2] && x[j][2]+timeStepSize*v[j][2]>=x[i][2]+timeStepSize*v[i][2])
