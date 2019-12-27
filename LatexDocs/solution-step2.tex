@@ -1,5 +1,5 @@
 \documentclass{article}
-
+\usepackage{pgfplots}
 \title{Solution Step 2 \\ Results}
 \author{Jake Mortimer - Durham University}
 
@@ -8,8 +8,21 @@
 \section{Results}
 In this section I will gather my results for the Pythagorean Three-Body Problem across multiple $\Delta t$ in the explicit Euler method. \\
 Results\\
-1e-8 : (2.0022481732864, 0.998171678758859, 0)
-1e-9 : (2.00224822858151, 0.998171678646984, 0)
+\begin{tikzpicture}
+\begin{axis}[
+    xmode=log,
+    log ticks with fixed point,
+    % for log axes, x filter operates on LOGS.
+    % and log(x * 1000) = log(x) + log(1000):
+    x filter/.code=\pgfmathparse{#1 + 6.90775527898214},
+]
+\addplot table {
+0.0001 10
+0.001 20
+0.01 15
+};
+\end{axis}
+\end{tikzpicture}
 
 \section{How does the position of points depend on the time step chosen?}
 

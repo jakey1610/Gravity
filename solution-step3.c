@@ -216,62 +216,64 @@ void updateBody() {
   for(int j=0; j<NumberOfBodies; ++j){
       //Sort into buckets
 
-      const int numBuckets = 11;
+      const int numBuckets = 10;
 
-      bool** buckets = new bool*[numBuckets]();
-      for (int i=0; i<numBuckets; i++){
+      bool** buckets = new bool*[numBuckets+1]();
+      for (int i=0; i<numBuckets+1; i++){
         buckets[i] = new bool[NumberOfBodies]();
       }
 
-      const double vBucket = maxV / (numBuckets-1);
+      const double vBucket = maxV / (numBuckets);
 
       int* timeStepDivisor = new int[NumberOfBodies]();
 
       for (int jj=0; jj<NumberOfBodies;jj++){
         double velocity = std::sqrt(v[jj][0] * v[jj][0] + v[jj][1] * v[jj][1] + v[jj][2] * v[jj][2]);
         if (velocity < vBucket){
-          timeStepDivisor[jj] = numBuckets-1;
+          timeStepDivisor[jj] = numBuckets;
           buckets[0][jj] = true;
         } else if (velocity >= vBucket && velocity <  2*vBucket) {
-          timeStepDivisor[jj] = numBuckets-2;
+          timeStepDivisor[jj] = numBuckets-1;
           buckets[1][jj] = true;
         } else if (velocity >= 2*vBucket && velocity <  3*vBucket) {
-          timeStepDivisor[jj] = numBuckets-3;
+          timeStepDivisor[jj] = numBuckets-2;
           buckets[2][jj] = true;
         } else if (velocity >= 3*vBucket && velocity <  4*vBucket) {
-          timeStepDivisor[jj] = numBuckets-4;
+          timeStepDivisor[jj] = numBuckets-3;
           buckets[3][jj] = true;
         } else if (velocity >= 4*vBucket && velocity <  5*vBucket) {
-          timeStepDivisor[jj] = numBuckets-5;
+          timeStepDivisor[jj] = numBuckets-4;
           buckets[4][jj] = true;
         } else if (velocity >= 5*vBucket && velocity <  6*vBucket) {
-          timeStepDivisor[jj] = numBuckets-6;
+          timeStepDivisor[jj] = numBuckets-5;
           buckets[5][jj] = true;
         } else if (velocity >= 6*vBucket && velocity <  7*vBucket) {
-          timeStepDivisor[jj] = numBuckets-7;
+          timeStepDivisor[jj] = numBuckets-6;
           buckets[6][jj] = true;
         } else if (velocity >= 7*vBucket && velocity <  8*vBucket) {
-          timeStepDivisor[jj] = numBuckets-8;
+          timeStepDivisor[jj] = numBuckets-7;
           buckets[7][jj] = true;
         } else if (velocity >= 8*vBucket && velocity <  9*vBucket) {
-          timeStepDivisor[jj] = numBuckets-9;
+          timeStepDivisor[jj] = numBuckets-8;
           buckets[8][jj] = true;
         } else {
-          timeStepDivisor[jj] = numBuckets-10;
+          timeStepDivisor[jj] = numBuckets-9;
           buckets[9][jj] = true;
         }
       }
 
-      for (int jj = numBuckets-2; jj>0; jj--){
+      for (int jj = numBuckets-1; jj>0; jj--){
         for (int ii = 0; ii<NumberOfBodies; ii++){
           if(buckets[jj][ii]){
             double timeStepAltered = timeStepSize / timeStepDivisor[ii];
-            x[ii][0] = x[ii][0] + timeStepAltered * v[ii][0];
-            x[ii][1] = x[ii][1] + timeStepAltered * v[ii][1];
-            x[ii][2] = x[ii][2] + timeStepAltered * v[ii][2];
-            v[ii][0] = v[ii][0] + timeStepAltered * force0[ii] / mass[ii];
-            v[ii][1] = v[ii][1] + timeStepAltered * force1[ii] / mass[ii];
-            v[ii][2] = v[ii][2] + timeStepAltered * force2[ii] / mass[ii];
+            for (int num = 1; num<jj+1; num++){
+              x[ii][0] = x[ii][0] + timeStepAltered * v[ii][0];
+              x[ii][1] = x[ii][1] + timeStepAltered * v[ii][1];
+              x[ii][2] = x[ii][2] + timeStepAltered * v[ii][2];
+              v[ii][0] = v[ii][0] + timeStepAltered * force0[ii] / mass[ii];
+              v[ii][1] = v[ii][1] + timeStepAltered * force1[ii] / mass[ii];
+              v[ii][2] = v[ii][2] + timeStepAltered * force2[ii] / mass[ii];
+            }
             maxV = std::max(maxV, std::sqrt(v[ii][0] * v[ii][0] + v[ii][1] * v[ii][1] + v[ii][2] * v[ii][2]));
           }
         }
