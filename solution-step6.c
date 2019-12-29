@@ -12,6 +12,9 @@
 //
 // (C) 2018-2019 Tobias Weinzierl
 
+
+//NEED TO SORT THIS PARALLELISATION OUT
+
 #include <fstream>
 #include <sstream>
 #include <iostream>
@@ -246,12 +249,14 @@ void updateBody() {
     for (int ii = 0; ii<NumberOfBodies; ii++){
       if(buckets[jj][ii]){
         double timeStepAltered = timeStepSize / timeStepDivisor[ii];
-        x[ii][0] = x[ii][0] + timeStepAltered * v[ii][0];
-        x[ii][1] = x[ii][1] + timeStepAltered * v[ii][1];
-        x[ii][2] = x[ii][2] + timeStepAltered * v[ii][2];
-        v[ii][0] = v[ii][0] + timeStepAltered * force0[ii] / mass[ii];
-        v[ii][1] = v[ii][1] + timeStepAltered * force1[ii] / mass[ii];
-        v[ii][2] = v[ii][2] + timeStepAltered * force2[ii] / mass[ii];
+        for (int num = 1; num<jj+1; num++){
+          x[ii][0] = x[ii][0] + timeStepAltered * v[ii][0];
+          x[ii][1] = x[ii][1] + timeStepAltered * v[ii][1];
+          x[ii][2] = x[ii][2] + timeStepAltered * v[ii][2];
+          v[ii][0] = v[ii][0] + timeStepAltered * force0[ii] / mass[ii];
+          v[ii][1] = v[ii][1] + timeStepAltered * force1[ii] / mass[ii];
+          v[ii][2] = v[ii][2] + timeStepAltered * force2[ii] / mass[ii];
+        }
         maxV = std::max(maxV, std::sqrt(v[ii][0] * v[ii][0] + v[ii][1] * v[ii][1] + v[ii][2] * v[ii][2]));
       }
     }
