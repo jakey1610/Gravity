@@ -190,6 +190,7 @@ void updateBody() {
   auto* force2 = new double[NumberOfBodies]();
   #pragma omp parallel for
   for(int j=0; j<NumberOfBodies; ++j){
+    #pragma omp parallel for
     for (int i=j+1; i<NumberOfBodies; i++) {
         const double distance = sqrt(
           (x[j][0]-x[i][0]) * (x[j][0]-x[i][0]) +

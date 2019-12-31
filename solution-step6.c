@@ -227,9 +227,10 @@ void updateBody() {
   int* timeStepDivisor = new int[NumberOfBodies]();
   const double vBucket = maxV / (numBuckets-1);
   double velocity = 0;
-  #pragma omp parallel for collapse(2)
+  #pragma omp parallel for
   for(int j=0; j<NumberOfBodies; ++j){
       //Sort into buckets
+      #pragma omp parallel for
       for (int ii=0; ii<numBuckets-1; ii++){
         velocity = std::sqrt(v[j][0] * v[j][0] + v[j][1] * v[j][1] + v[j][2] * v[j][2]);
         if (velocity >= ii*vBucket && velocity < (ii+1)*vBucket){
@@ -244,7 +245,7 @@ void updateBody() {
 
 
   }
-  //#pragma omp parallel for
+  #pragma omp parallel for collapse(2)
   for (int jj = numBuckets-2; jj>0; jj--){
     for (int ii = 0; ii<NumberOfBodies; ii++){
       if(buckets[jj][ii]){

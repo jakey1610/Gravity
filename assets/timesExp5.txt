@@ -1,0 +1,135 @@
+##### DATA FOR CUBE OF SIZE 20 #####
+
+SOLS1
+56.09user 0.02system 0:56.26elapsed 99%CPU (0avgtext+0avgdata 4876maxresident)k
+0inputs+16outputs (0major+1995minor)pagefaults 0swaps
+
+cores: 1
+SOLS2
+57.40user 0.40system 0:57.96elapsed 99%CPU (0avgtext+0avgdata 5348maxresident)k
+568inputs+8outputs (3major+517minor)pagefaults 0swaps
+
+cores: 2
+SOLS2
+68.81user 0.42system 0:49.16elapsed 140%CPU (0avgtext+0avgdata 5356maxresident)k
+0inputs+16outputs (0major+521minor)pagefaults 0swaps
+
+cores: 3
+SOLS2
+78.07user 0.47system 0:39.46elapsed 199%CPU (0avgtext+0avgdata 5372maxresident)k
+0inputs+8outputs (0major+525minor)pagefaults 0swaps
+
+cores: 4
+SOLS2
+78.98user 0.43system 0:29.75elapsed 266%CPU (0avgtext+0avgdata 5404maxresident)k
+64inputs+16outputs (2major+528minor)pagefaults 0swaps
+
+cores:5
+SOLS2
+89.91user 0.51system 0:26.32elapsed 343%CPU (0avgtext+0avgdata 5364maxresident)k
+0inputs+8outputs (0major+534minor)pagefaults 0swaps
+
+cores:6
+SOLS2
+99.14user 0.44system 0:23.25elapsed 428%CPU (0avgtext+0avgdata 5344maxresident)k
+0inputs+8outputs (0major+539minor)pagefaults 0swaps
+
+cores: 7
+107.31user 0.46system 0:21.85elapsed 493%CPU (0avgtext+0avgdata 5404maxresident)k
+0inputs+8outputs (0major+543minor)pagefaults 0swaps
+
+cores: 8
+113.97user 0.50system 0:20.51elapsed 557%CPU (0avgtext+0avgdata 5344maxresident)k
+0inputs+16outputs (0major+548minor)pagefaults 0swaps
+
+##### DATA FOR CUBE OF SIZE 25 ####
+
+SOLS1
+212.44user 0.07system 3:33.04elapsed 99%CPU (0avgtext+0avgdata 6040maxresident)k
+264inputs+16outputs (0major+6838minor)pagefaults 0swaps
+
+cores: 1
+SOLS2
+220.26user 0.77system 3:41.65elapsed 99%CPU (0avgtext+0avgdata 6724maxresident)k
+0inputs+16outputs (0major+861minor)pagefaults 0swaps
+
+cores: 2
+SOLS2
+241.20user 0.92system 2:57.83elapsed 136%CPU (0avgtext+0avgdata 6540maxresident)k
+0inputs+16outputs (0major+862minor)pagefaults 0swaps
+
+cores: 3
+SOLS2
+250.23user 0.91system 2:13.10elapsed 188%CPU (0avgtext+0avgdata 6556maxresident)k
+16inputs+16outputs (1major+865minor)pagefaults 0swaps
+
+cores: 4
+SOLS2
+261.82user 0.82system 1:46.84elapsed 245%CPU (0avgtext+0avgdata 6772maxresident)k
+0inputs+16outputs (0major+872minor)pagefaults 0swaps
+
+cores: 5
+SOLS2
+288.35user 0.86system 1:31.61elapsed 315%CPU (0avgtext+0avgdata 6748maxresident)k
+0inputs+16outputs (0major+878minor)pagefaults 0swaps
+
+cores: 6
+SOLS2
+327.21user 1.00system 1:24.59elapsed 387%CPU (0avgtext+0avgdata 6760maxresident)k
+0inputs+16outputs (0major+881minor)pagefaults 0swaps
+
+cores: 7
+SOLS2
+345.41user 0.98system 1:15.84elapsed 456%CPU (0avgtext+0avgdata 6724maxresident)k
+0inputs+16outputs (0major+884minor)pagefaults 0swaps
+
+cores: 8
+SOLS2
+367.59user 1.02system 1:12.53elapsed 508%CPU (0avgtext+0avgdata 6796maxresident)k
+24inputs+16outputs (1major+889minor)pagefaults 0swaps
+
+##### DATA FOR CUBE OF SIZE 30 #####
+SOLS1
+436.63user 0.07system 8:57.80elapsed 99%CPU (0avgtext+0avgdata 8048maxresident)k
+0inputs+16outputs (0major+14083minor)pagefaults 0swaps
+
+cores: 1
+SOLS2
+544.69user 1.41system 9:07.86elapsed 99%CPU (0avgtext+0avgdata 8656maxresident)k
+0inputs+16outputs (0major+14104minor)pagefaults 0swaps
+
+cores: 2
+SOLS2
+483.02user 1.14system 5:51.23elapsed 137%CPU (0avgtext+0avgdata 8644maxresident)k
+0inputs+16outputs (0major+14110minor)pagefaults 0swaps
+
+cores: 3
+SOLS2
+556.16user 1.34system 4:54.68elapsed 189%CPU (0avgtext+0avgdata 8580maxresident)k
+0inputs+16outputs (0major+14112minor)pagefaults 0swaps
+
+cores: 4
+SOLS2
+612.07user 1.48system 4:09.91elapsed 245%CPU (0avgtext+0avgdata 8688maxresident)k
+24inputs+16outputs (1major+14117minor)pagefaults 0swaps
+
+cores: 5
+SOLS2
+700.75user 1.46system 3:48.18elapsed 307%CPU (0avgtext+0avgdata 8612maxresident)k
+0inputs+16outputs (0major+14120minor)pagefaults 0swaps
+
+cores: 6
+SOLS2
+794.76user 1.69system 3:29.44elapsed 380%CPU (0avgtext+0avgdata 8612maxresident)k
+0inputs+16outputs (0major+14025minor)pagefaults 0swaps
+
+cores: 7
+SOLS2
+880.38user 1.76system 3:23.36elapsed 433%CPU (0avgtext+0avgdata 8580maxresident)k
+0inputs+16outputs (0major+14028minor)pagefaults 0swaps
+
+cores: 8
+SOLS2
+937.64user 2.08system 3:13.05elapsed 486%CPU (0avgtext+0avgdata 8604maxresident)k
+0inputs+16outputs (0major+14034minor)pagefaults 0swaps
+
