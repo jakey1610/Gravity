@@ -13,13 +13,13 @@ for i in range(0,dimension):
             comm.append("0")
             comm.append("0")
             comm.append("1")
-print("SOLS1")
-comm[1]="../assignment3"
-call(comm)
-print("SOLS2")
+# print("SOLS1")
+# comm[1]="../assignment3"
+# call(comm)
+print("------------")
 # for i in range(1,maxThreads):
 #     print("cores:" + str(i))
-call("export OMP_NUM_THREADS=8", shell=True)
+# call("export OMP_NUM_THREADS=8", shell=True)
 comm[1]="../assignment6"
 call(comm)
 # file = open("text_string.txt", "w")

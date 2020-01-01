@@ -103,14 +103,14 @@ void setUp(int argc, char** argv) {
     }
   }
 
-  std::cout << "created setup with " << NumberOfBodies << " bodies" << std::endl;
+  // std::cout << "created setup with " << NumberOfBodies << " bodies" << std::endl;
 
   if (tPlotDelta<=0.0) {
     std::cout << "plotting switched off" << std::endl;
     tPlot = tFinal + 1.0;
   }
   else {
-    std::cout << "plot initial setup plus every " << tPlotDelta << " time units" << std::endl;
+    // std::cout << "plot initial setup plus every " << tPlotDelta << " time units" << std::endl;
     tPlot = 0.0;
   }
 }
@@ -196,7 +196,9 @@ void updateBody() {
   auto* force1 = new double[NumberOfBodies]();
   auto* force2 = new double[NumberOfBodies]();
 
+  #pragma omp parallel for
   for(int j=0; j<NumberOfBodies; ++j){
+    #pragma omp parallel for
     for (int i=j+1; i<NumberOfBodies; i++) {
         const double distance = sqrt(
           (x[j][0]-x[i][0]) * (x[j][0]-x[i][0]) +
@@ -264,8 +266,9 @@ void updateBody() {
   }
 
   //Update the velocity of each item if collision occurs
-
+  #pragma omp parallel for
   for (int j=NumberOfBodies-1; j>0; --j){
+    #pragma omp parallel for private(j)
     for(int i=0; i<j; ++i){
       const double distance = sqrt(
         (x[j][0]-x[i][0]) * (x[j][0]-x[i][0]) +
@@ -356,14 +359,14 @@ int main(int argc, char** argv) {
     updateBody();
     timeStepCounter++;
     if (t >= tPlot) {
-      printParaviewSnapshot();
-      std::cout << "plot next snapshot"
-    		    << ",\t time step=" << timeStepCounter
-    		    << ",\t t="         << t
-				<< ",\t dt="        << timeStepSize
-				<< ",\t v_max="     << maxV
-				<< ",\t dx_min="    << minDx
-				<< std::endl;
+      // printParaviewSnapshot();
+      // std::cout << "plot next snapshot"
+    	// 	    << ",\t time step=" << timeStepCounter
+    	// 	    << ",\t t="         << t
+			// 	<< ",\t dt="        << timeStepSize
+			// 	<< ",\t v_max="     << maxV
+			// 	<< ",\t dx_min="    << minDx
+			// 	<< std::endl;
 
       tPlot += tPlotDelta;
     }
