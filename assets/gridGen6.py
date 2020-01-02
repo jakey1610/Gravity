@@ -1,8 +1,8 @@
 from subprocess import call
 
-dimension = 20
+dimension = 5
 # maxThreads = 8
-comm = ["time", "../assignment3", "0.01", "1", "0.01"]
+comm = ["time", "../assignment3", "0.01", "1", "1e-5"]
 for i in range(0,dimension):
     for j in range(0,dimension):
         for m in range(0, dimension):

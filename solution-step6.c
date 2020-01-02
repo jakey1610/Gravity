@@ -103,14 +103,14 @@ void setUp(int argc, char** argv) {
     }
   }
 
-  // std::cout << "created setup with " << NumberOfBodies << " bodies" << std::endl;
+  std::cout << "created setup with " << NumberOfBodies << " bodies" << std::endl;
 
   if (tPlotDelta<=0.0) {
     std::cout << "plotting switched off" << std::endl;
     tPlot = tFinal + 1.0;
   }
   else {
-    // std::cout << "plot initial setup plus every " << tPlotDelta << " time units" << std::endl;
+    std::cout << "plot initial setup plus every " << tPlotDelta << " time units" << std::endl;
     tPlot = 0.0;
   }
 }
@@ -219,36 +219,36 @@ void updateBody() {
     }
   }
 
-  const int numBuckets = 11;
+  const int numBuckets = 10;
 
-  bool** buckets = new bool*[numBuckets]();
+  bool** buckets = new bool*[numBuckets+1]();
   for (int i=0; i<numBuckets; i++){
     buckets[i] = new bool[NumberOfBodies]();
   }
 
   int* timeStepDivisor = new int[NumberOfBodies]();
-  const double vBucket = maxV / (numBuckets-1);
+  const double vBucket = maxV / (numBuckets);
   double velocity = 0;
   #pragma omp parallel for
   for(int j=0; j<NumberOfBodies; ++j){
       //Sort into buckets
       #pragma omp parallel for
-      for (int ii=0; ii<numBuckets-1; ii++){
+      for (int ii=0; ii<numBuckets; ii++){
         velocity = std::sqrt(v[j][0] * v[j][0] + v[j][1] * v[j][1] + v[j][2] * v[j][2]);
         if (velocity >= ii*vBucket && velocity < (ii+1)*vBucket){
           timeStepDivisor[j] = numBuckets-(ii+1);
           buckets[ii][j] = true;
         }
       }
-      if (velocity >= (numBuckets+1)*vBucket){
-        timeStepDivisor[j] = numBuckets-10;
+      if (velocity >= (numBuckets+2)*vBucket){
+        timeStepDivisor[j] = numBuckets-9;
         buckets[9][j] = true;
       }
 
 
   }
   #pragma omp parallel for collapse(2)
-  for (int jj = numBuckets-2; jj>0; jj--){
+  for (int jj = numBuckets-1; jj>0; jj--){
     for (int ii = 0; ii<NumberOfBodies; ii++){
       if(buckets[jj][ii]){
         double timeStepAltered = timeStepSize / timeStepDivisor[ii];
@@ -359,14 +359,14 @@ int main(int argc, char** argv) {
     updateBody();
     timeStepCounter++;
     if (t >= tPlot) {
-      // printParaviewSnapshot();
-      // std::cout << "plot next snapshot"
-    	// 	    << ",\t time step=" << timeStepCounter
-    	// 	    << ",\t t="         << t
-			// 	<< ",\t dt="        << timeStepSize
-			// 	<< ",\t v_max="     << maxV
-			// 	<< ",\t dx_min="    << minDx
-			// 	<< std::endl;
+      printParaviewSnapshot();
+      std::cout << "plot next snapshot"
+    		    << ",\t time step=" << timeStepCounter
+    		    << ",\t t="         << t
+				<< ",\t dt="        << timeStepSize
+				<< ",\t v_max="     << maxV
+				<< ",\t dx_min="    << minDx
+				<< std::endl;
 
       tPlot += tPlotDelta;
     }
