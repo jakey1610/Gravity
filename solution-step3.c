@@ -22,7 +22,6 @@
 
 #include <time.h>
 
-time_t  tINITIAL = clock();
 double t          = 0;
 double tFinal     = 0;
 double tPlot      = 0;
@@ -192,16 +191,16 @@ void updateBody() {
   auto* force0 = new double[NumberOfBodies]();
   auto* force1 = new double[NumberOfBodies]();
   auto* force2 = new double[NumberOfBodies]();
-  for(int j=0; j<NumberOfBodies; ++j){
-    for (int i=j+1; i<NumberOfBodies; i++) {
-        const double distance = sqrt(
+  for(auto j=0; j<NumberOfBodies; ++j){
+    for (auto i=j+1; i<NumberOfBodies; i++) {
+        const auto distance = sqrt(
           (x[j][0]-x[i][0]) * (x[j][0]-x[i][0]) +
           (x[j][1]-x[i][1]) * (x[j][1]-x[i][1]) +
           (x[j][2]-x[i][2]) * (x[j][2]-x[i][2])
         );
 
         // x,y,z forces acting on particles
-        double c = mass[i]*mass[j] / distance / distance / distance ;
+        auto c = mass[i]*mass[j] / distance / distance / distance ;
 
         force0[j] += (x[i][0]-x[j][0]) * c;
         force1[j] += (x[i][1]-x[j][1]) * c;
@@ -213,22 +212,22 @@ void updateBody() {
     }
   }
 
-  for(int j=0; j<NumberOfBodies; ++j){
+  for(auto j=0; j<NumberOfBodies; ++j){
       //Sort into buckets
 
-      const int numBuckets = 10;
+      const auto numBuckets = 10;
 
       bool** buckets = new bool*[numBuckets+1]();
-      for (int i=0; i<numBuckets+1; i++){
+      for (auto i=0; i<numBuckets+1; i++){
         buckets[i] = new bool[NumberOfBodies]();
       }
 
-      const double vBucket = maxV / (numBuckets);
+      const auto vBucket = maxV / (numBuckets);
 
-      int* timeStepDivisor = new int[NumberOfBodies]();
+      auto* timeStepDivisor = new double[NumberOfBodies]();
 
-      for (int jj=0; jj<NumberOfBodies;jj++){
-        double velocity = std::sqrt(v[jj][0] * v[jj][0] + v[jj][1] * v[jj][1] + v[jj][2] * v[jj][2]);
+      for (auto jj=0; jj<NumberOfBodies;jj++){
+        auto velocity = std::sqrt(v[jj][0] * v[jj][0] + v[jj][1] * v[jj][1] + v[jj][2] * v[jj][2]);
         if (velocity < vBucket){
           timeStepDivisor[jj] = numBuckets;
           buckets[0][jj] = true;
@@ -262,11 +261,11 @@ void updateBody() {
         }
       }
 
-      for (int jj = numBuckets-1; jj>0; jj--){
-        for (int ii = 0; ii<NumberOfBodies; ii++){
+      for (auto jj = numBuckets-1; jj>0; jj--){
+        for (auto ii = 0; ii<NumberOfBodies; ii++){
           if(buckets[jj][ii]){
-            double timeStepAltered = timeStepSize / timeStepDivisor[ii];
-            for (int num = 1; num<jj+1; num++){
+            auto timeStepAltered = timeStepSize / timeStepDivisor[ii];
+            for (auto num = 1; num<jj+1; num++){
               x[ii][0] = x[ii][0] + timeStepAltered * v[ii][0];
               x[ii][1] = x[ii][1] + timeStepAltered * v[ii][1];
               x[ii][2] = x[ii][2] + timeStepAltered * v[ii][2];
@@ -281,15 +280,15 @@ void updateBody() {
   }
 
   //Update the velocity of each item if collision occurs
-  for (int j=NumberOfBodies-1; j>0; --j){
-    for(int i=0; i<j; ++i){
-      const double distance = sqrt(
+  for (auto j=NumberOfBodies-1; j>0; --j){
+    for(auto i=0; i<j; ++i){
+      const auto distance = sqrt(
         (x[j][0]-x[i][0]) * (x[j][0]-x[i][0]) +
         (x[j][1]-x[i][1]) * (x[j][1]-x[i][1]) +
         (x[j][2]-x[i][2]) * (x[j][2]-x[i][2])
       );
       if (distance <= 0.01){
-        const double comb = mass[i]+mass[j];
+        const auto comb = mass[i]+mass[j];
         v[i][0] = mass[i]*(1/comb)*v[i][0] + mass[j]*(1/comb)*v[j][0];
         v[i][1] = mass[i]*(1/comb)*v[i][1] + mass[j]*(1/comb)*v[j][1];
         v[i][2] = mass[i]*(1/comb)*v[i][2] + mass[j]*(1/comb)*v[j][2];
@@ -318,9 +317,6 @@ void updateBody() {
   if (NumberOfBodies<=1){
     std::cout << "Position: (" << x[0][0] << ", " << x[0][1] << ", " << x[0][2] << ")" << std::endl;
     t=tFinal+1;
-    time_t tFINAL = clock();
-    time_t total = tFINAL-tINITIAL;
-    std::cout << total << std::endl;
   }
 
   t += timeStepSize;

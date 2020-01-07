@@ -103,14 +103,14 @@ void setUp(int argc, char** argv) {
     }
   }
 
-  std::cout << "created setup with " << NumberOfBodies << " bodies" << std::endl;
+  // std::cout << "created setup with " << NumberOfBodies << " bodies" << std::endl;
 
   if (tPlotDelta<=0.0) {
     std::cout << "plotting switched off" << std::endl;
     tPlot = tFinal + 1.0;
   }
   else {
-    std::cout << "plot initial setup plus every " << tPlotDelta << " time units" << std::endl;
+    // std::cout << "plot initial setup plus every " << tPlotDelta << " time units" << std::endl;
     tPlot = 0.0;
   }
 }
@@ -196,18 +196,18 @@ void updateBody() {
   auto* force1 = new double[NumberOfBodies]();
   auto* force2 = new double[NumberOfBodies]();
 
-  #pragma omp parallel for
-  for(int j=0; j<NumberOfBodies; ++j){
-    #pragma omp parallel for
-    for (int i=j+1; i<NumberOfBodies; i++) {
-        const double distance = sqrt(
+  #pragma omp parallel for schedule(auto)
+  for(auto j=0; j<NumberOfBodies; ++j){
+    #pragma omp parallel for schedule(auto)
+    for (auto i=j+1; i<NumberOfBodies; i++) {
+        const auto distance = sqrt(
           (x[j][0]-x[i][0]) * (x[j][0]-x[i][0]) +
           (x[j][1]-x[i][1]) * (x[j][1]-x[i][1]) +
           (x[j][2]-x[i][2]) * (x[j][2]-x[i][2])
         );
 
         // x,y,z forces acting on particles
-        double c = mass[i]*mass[j] / distance / distance / distance ;
+        auto c = mass[i]*mass[j] / distance / distance / distance ;
 
         force0[j] += (x[i][0]-x[j][0]) * c;
         force1[j] += (x[i][1]-x[j][1]) * c;
@@ -219,21 +219,21 @@ void updateBody() {
     }
   }
 
-  const int numBuckets = 10;
+  const auto numBuckets = 10;
 
   bool** buckets = new bool*[numBuckets+1]();
-  for (int i=0; i<numBuckets; i++){
+  for (auto i=0; i<numBuckets; i++){
     buckets[i] = new bool[NumberOfBodies]();
   }
 
-  int* timeStepDivisor = new int[NumberOfBodies]();
-  const double vBucket = maxV / (numBuckets);
-  double velocity = 0;
-  #pragma omp parallel for
-  for(int j=0; j<NumberOfBodies; ++j){
+  auto* timeStepDivisor = new int[NumberOfBodies]();
+  const auto vBucket = maxV / (numBuckets);
+  auto velocity = 0;
+  #pragma omp parallel for schedule(auto)
+  for(auto j=0; j<NumberOfBodies; ++j){
       //Sort into buckets
-      #pragma omp parallel for
-      for (int ii=0; ii<numBuckets; ii++){
+      #pragma omp parallel for schedule(auto)
+      for (auto ii=0; ii<numBuckets; ii++){
         velocity = std::sqrt(v[j][0] * v[j][0] + v[j][1] * v[j][1] + v[j][2] * v[j][2]);
         if (velocity >= ii*vBucket && velocity < (ii+1)*vBucket){
           timeStepDivisor[j] = numBuckets-(ii+1);
@@ -247,12 +247,13 @@ void updateBody() {
 
 
   }
-  #pragma omp parallel for collapse(2)
-  for (int jj = numBuckets-1; jj>0; jj--){
-    for (int ii = 0; ii<NumberOfBodies; ii++){
+  #pragma omp parallel for schedule(auto) collapse(2)//dynamic,numBuckets*NumberOfBodies*numBucket) collapse(2)
+  for (auto jj = numBuckets-1; jj>0; jj--){
+    for (auto ii = 0; ii<NumberOfBodies; ii++){
       if(buckets[jj][ii]){
-        double timeStepAltered = timeStepSize / timeStepDivisor[ii];
-        for (int num = 1; num<jj+1; num++){
+        auto timeStepAltered = timeStepSize / timeStepDivisor[ii];
+        #pragma omp parallel for schedule(auto)
+        for (auto num = 1; num<jj+1; num++){
           x[ii][0] = x[ii][0] + timeStepAltered * v[ii][0];
           x[ii][1] = x[ii][1] + timeStepAltered * v[ii][1];
           x[ii][2] = x[ii][2] + timeStepAltered * v[ii][2];
@@ -266,17 +267,17 @@ void updateBody() {
   }
 
   //Update the velocity of each item if collision occurs
-  #pragma omp parallel for
-  for (int j=NumberOfBodies-1; j>0; --j){
-    #pragma omp parallel for private(j)
-    for(int i=0; i<j; ++i){
+  #pragma omp parallel for schedule(auto)
+  for (auto j=NumberOfBodies-1; j>0; --j){
+    // #pragma omp parallel for schedule(dynamic,NumberOfBodies*7)
+    for(auto i=0; i<j; ++i){
       const double distance = sqrt(
         (x[j][0]-x[i][0]) * (x[j][0]-x[i][0]) +
         (x[j][1]-x[i][1]) * (x[j][1]-x[i][1]) +
         (x[j][2]-x[i][2]) * (x[j][2]-x[i][2])
       );
       if (distance <= 0.01){
-        const double comb = mass[i]+mass[j];
+        const auto comb = mass[i]+mass[j];
         v[i][0] = mass[i]*(1/comb)*v[i][0] + mass[j]*(1/comb)*v[j][0];
         v[i][1] = mass[i]*(1/comb)*v[i][1] + mass[j]*(1/comb)*v[j][1];
         v[i][2] = mass[i]*(1/comb)*v[i][2] + mass[j]*(1/comb)*v[j][2];
@@ -359,14 +360,14 @@ int main(int argc, char** argv) {
     updateBody();
     timeStepCounter++;
     if (t >= tPlot) {
-      printParaviewSnapshot();
-      std::cout << "plot next snapshot"
-    		    << ",\t time step=" << timeStepCounter
-    		    << ",\t t="         << t
-				<< ",\t dt="        << timeStepSize
-				<< ",\t v_max="     << maxV
-				<< ",\t dx_min="    << minDx
-				<< std::endl;
+      // printParaviewSnapshot();
+      // std::cout << "plot next snapshot"
+    	// 	    << ",\t time step=" << timeStepCounter
+    	// 	    << ",\t t="         << t
+			// 	<< ",\t dt="        << timeStepSize
+			// 	<< ",\t v_max="     << maxV
+			// 	<< ",\t dx_min="    << minDx
+			// 	<< std::endl;
 
       tPlot += tPlotDelta;
     }
