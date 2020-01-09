@@ -247,7 +247,7 @@ void updateBody() {
 
 
   }
-  #pragma omp parallel for schedule(auto) collapse(2)//dynamic,numBuckets*NumberOfBodies*numBucket) collapse(2)
+  #pragma omp parallel for schedule(auto) reduction(max:maxV) collapse(2)//dynamic,numBuckets*NumberOfBodies*numBucket) collapse(2)
   for (auto jj = numBuckets-1; jj>0; jj--){
     for (auto ii = 0; ii<NumberOfBodies; ii++){
       if(buckets[jj][ii]){
@@ -310,6 +310,11 @@ void updateBody() {
   }
 
   t += timeStepSize;
+  for (auto i=0; i<numBuckets+1; i++){
+    delete[] buckets[i];
+  }
+  delete[] buckets;
+  delete[] timeStepDivisor;
   delete[] force0;
   delete[] force1;
   delete[] force2;

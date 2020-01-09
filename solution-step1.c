@@ -105,7 +105,7 @@ void setUp(int argc, char** argv) {
     tPlot = tFinal + 1.0;
   }
   else {
-    // std::cout << "plot initial setup plus every " << tPlotDelta << " time units" << std::endl;
+    std::cout << "plot initial setup plus every " << tPlotDelta << " time units" << std::endl;
     tPlot = 0.0;
   }
 }
@@ -188,31 +188,35 @@ void updateBody() {
   auto* force0 = new double[NumberOfBodies]();
   auto* force1 = new double[NumberOfBodies]();
   auto* force2 = new double[NumberOfBodies]();
-  for(int j=0; j<NumberOfBodies; ++j){
-    for (int i=j+1; i<NumberOfBodies; i++) {
-        const double distance = sqrt(
-          (x[j][0]-x[i][0]) * (x[j][0]-x[i][0]) +
-          (x[j][1]-x[i][1]) * (x[j][1]-x[i][1]) +
-          (x[j][2]-x[i][2]) * (x[j][2]-x[i][2])
+  for(auto j=0; j<NumberOfBodies; ++j){
+    for (auto i=j+1; i<NumberOfBodies; i++) {
+        const auto xZ = x[i][0]-x[j][0];
+        const auto xO = x[i][1]-x[j][1];
+        const auto xT = x[i][2]-x[j][2];
+        const auto distance = sqrt(
+          xZ * xZ +
+          xO * xO +
+          xT * xT
         );
         // x,y,z forces acting on particles
-        const double c = mass[i]*mass[j] / distance / distance / distance ;
-        force0[j] += (x[i][0]-x[j][0]) * c;
-        force1[j] += (x[i][1]-x[j][1]) * c;
-        force2[j] += (x[i][2]-x[j][2]) * c;
-        force0[i] -= (x[i][0]-x[j][0]) * c;
-        force1[i] -= (x[i][1]-x[j][1]) * c;
-        force2[i] -= (x[i][2]-x[j][2]) * c;
+        const auto c = mass[i]*mass[j]/(distance * distance * distance) ;
+        force0[j] += xZ * c;
+        force1[j] += xO * c;
+        force2[j] += xT * c;
+        force0[i] -= xZ * c;
+        force1[i] -= xO * c;
+        force2[i] -= xT * c;
         minDx = std::min(minDx, distance);
     }
   }
-  for(int j = 0; j<NumberOfBodies; ++j){
+  for(auto j = 0; j<NumberOfBodies; ++j){
+    const auto c = timeStepSize/mass[j];
     x[j][0] = x[j][0] + timeStepSize * v[j][0];
     x[j][1] = x[j][1] + timeStepSize * v[j][1];
     x[j][2] = x[j][2] + timeStepSize * v[j][2];
-    v[j][0] = v[j][0] + timeStepSize * force0[j] / mass[j];
-    v[j][1] = v[j][1] + timeStepSize * force1[j] / mass[j];
-    v[j][2] = v[j][2] + timeStepSize * force2[j] / mass[j];
+    v[j][0] = v[j][0] + force0[j] * c;
+    v[j][1] = v[j][1] + force1[j] * c;
+    v[j][2] = v[j][2] + force2[j] * c;
     maxV = std::max(maxV, std::sqrt(v[j][0] * v[j][0] + v[j][1] * v[j][1] + v[j][2] * v[j][2]));
   }
   t += timeStepSize;
@@ -268,14 +272,14 @@ int main(int argc, char** argv) {
     updateBody();
     timeStepCounter++;
     if (t >= tPlot) {
-      // printParaviewSnapshot();
-      // std::cout << "plot next snapshot"
-    	// 	    << ",\t time step=" << timeStepCounter
-    	// 	    << ",\t t="         << t
-			// 	<< ",\t dt="        << timeStepSize
-			// 	<< ",\t v_max="     << maxV
-			// 	<< ",\t dx_min="    << minDx
-			// 	<< std::endl;
+      printParaviewSnapshot();
+      std::cout << "plot next snapshot"
+    		    << ",\t time step=" << timeStepCounter
+    		    << ",\t t="         << t
+				<< ",\t dt="        << timeStepSize
+				<< ",\t v_max="     << maxV
+				<< ",\t dx_min="    << minDx
+				<< std::endl;
 
       tPlot += tPlotDelta;
     }

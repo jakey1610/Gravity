@@ -98,14 +98,14 @@ void setUp(int argc, char** argv) {
     }
   }
 
-  // std::cout << "created setup with " << NumberOfBodies << " bodies" << std::endl;
+  std::cout << "created setup with " << NumberOfBodies << " bodies" << std::endl;
 
   if (tPlotDelta<=0.0) {
     std::cout << "plotting switched off" << std::endl;
     tPlot = tFinal + 1.0;
   }
   else {
-    // std::cout << "plot initial setup plus every " << tPlotDelta << " time units" << std::endl;
+    std::cout << "plot initial setup plus every " << tPlotDelta << " time units" << std::endl;
     tPlot = 0.0;
   }
 }
@@ -261,9 +261,9 @@ int main(int argc, char** argv) {
 
   int snapshotCounter = 0;
   if (t > tPlot) {
-    // printParaviewSnapshot();
-    // std::cout << "plotted initial setup" << std::endl;
-    // tPlot = tPlotDelta;
+    printParaviewSnapshot();
+    std::cout << "plotted initial setup" << std::endl;
+    tPlot = tPlotDelta;
   }
 
   int timeStepCounter = 0;
@@ -271,14 +271,14 @@ int main(int argc, char** argv) {
     updateBody();
     timeStepCounter++;
     if (t >= tPlot) {
-      // printParaviewSnapshot();
-      // std::cout << "plot next snapshot"
-    	// 	    << ",\t time step=" << timeStepCounter
-    	// 	    << ",\t t="         << t
-			// 	<< ",\t dt="        << timeStepSize
-			// 	<< ",\t v_max="     << maxV
-			// 	<< ",\t dx_min="    << minDx
-			// 	<< std::endl;
+      printParaviewSnapshot();
+      std::cout << "plot next snapshot"
+    		    << ",\t time step=" << timeStepCounter
+    		    << ",\t t="         << t
+				<< ",\t dt="        << timeStepSize
+				<< ",\t v_max="     << maxV
+				<< ",\t dx_min="    << minDx
+				<< std::endl;
 
       tPlot += tPlotDelta;
     }

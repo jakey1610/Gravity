@@ -20,7 +20,7 @@ print("------------")
 # for i in range(1,maxThreads):
 #     print("cores:" + str(i))
 # call("export OMP_NUM_THREADS=8", shell=True)
-comm[1]="../assignment6"
+comm[1]="../assignment"
 call(comm)
 # file = open("text_string.txt", "w")
 # file.write(string)

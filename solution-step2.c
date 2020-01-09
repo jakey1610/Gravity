@@ -98,14 +98,14 @@ void setUp(int argc, char** argv) {
     }
   }
 
-  // std::cout << "created setup with " << NumberOfBodies << " bodies" << std::endl;
+  std::cout << "created setup with " << NumberOfBodies << " bodies" << std::endl;
 
   if (tPlotDelta<=0.0) {
-    // std::cout << "plotting switched off" << std::endl;
+    std::cout << "plotting switched off" << std::endl;
     tPlot = tFinal + 1.0;
   }
   else {
-    // std::cout << "plot initial setup plus every " << tPlotDelta << " time units" << std::endl;
+    std::cout << "plot initial setup plus every " << tPlotDelta << " time units" << std::endl;
     tPlot = 0.0;
   }
 }
@@ -258,8 +258,8 @@ void updateBody() {
     //(2.00224819850178, 0.998171674255814)
     //5e-9: 20022481985.0178   9981716742.55814
     //1e-10: 20022482311.0063   9981716781.97356
-    // std::cout << "Position: (" << x[0][0] << ", " << x[0][1] << ", " << x[0][2] << ")" << std::endl;
-    std::cout << timeStepSize <<" "<<sqrt(pow((20022482277.631-pow(10,10)*x[0][0]),2) + pow((9981716775.90204-pow(10,10)*x[0][1]),2))/pow(10,10) << std::endl;
+    std::cout << "Position: (" << x[0][0] << ", " << x[0][1] << ", " << x[0][2] << ")" << std::endl;
+    // std::cout << timeStepSize <<" "<<sqrt(pow((20022482277.631-pow(10,10)*x[0][0]),2) + pow((9981716775.90204-pow(10,10)*x[0][1]),2))/pow(10,10) << std::endl;
     t=tFinal+1;
   }
   t += timeStepSize;
@@ -305,8 +305,8 @@ int main(int argc, char** argv) {
 
   int snapshotCounter = 0;
   if (t > tPlot) {
-    // printParaviewSnapshot();
-    // std::cout << "plotted initial setup" << std::endl;
+    printParaviewSnapshot();
+    std::cout << "plotted initial setup" << std::endl;
     tPlot = tPlotDelta;
   }
 
@@ -315,14 +315,14 @@ int main(int argc, char** argv) {
     updateBody();
     timeStepCounter++;
     if (t >= tPlot) {
-      // printParaviewSnapshot();
-      // std::cout << "plot next snapshot"
-    	// 	    << ",\t time step=" << timeStepCounter
-    	// 	    << ",\t t="         << t
-			// 	<< ",\t dt="        << timeStepSize
-			// 	<< ",\t v_max="     << maxV
-			// 	<< ",\t dx_min="    << minDx
-			// 	<< std::endl;
+      printParaviewSnapshot();
+      std::cout << "plot next snapshot"
+    		    << ",\t time step=" << timeStepCounter
+    		    << ",\t t="         << t
+				<< ",\t dt="        << timeStepSize
+				<< ",\t v_max="     << maxV
+				<< ",\t dx_min="    << minDx
+				<< std::endl;
 
       tPlot += tPlotDelta;
     }

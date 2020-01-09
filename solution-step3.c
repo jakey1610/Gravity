@@ -277,6 +277,11 @@ void updateBody() {
           }
         }
       }
+      for (auto i=0; i<numBuckets+1; i++){
+        delete[] buckets[i];
+      }
+      delete[] buckets;
+      delete[] timeStepDivisor;
   }
 
   //Update the velocity of each item if collision occurs
