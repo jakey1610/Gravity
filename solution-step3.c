@@ -265,7 +265,7 @@ void updateBody() {
         for (auto ii = 0; ii<NumberOfBodies; ii++){
           if(buckets[jj][ii]){
             auto timeStepAltered = timeStepSize / timeStepDivisor[ii];
-            for (auto num = 1; num<jj+1; num++){
+            for (auto step = 1; step<jj+1; step++){
               x[ii][0] = x[ii][0] + timeStepAltered * v[ii][0];
               x[ii][1] = x[ii][1] + timeStepAltered * v[ii][1];
               x[ii][2] = x[ii][2] + timeStepAltered * v[ii][2];
@@ -287,12 +287,13 @@ void updateBody() {
   //Update the velocity of each item if collision occurs
   for (auto j=NumberOfBodies-1; j>0; --j){
     for(auto i=0; i<j; ++i){
-      const auto distance = sqrt(
+      const auto distanceSqrd = (
         (x[j][0]-x[i][0]) * (x[j][0]-x[i][0]) +
         (x[j][1]-x[i][1]) * (x[j][1]-x[i][1]) +
         (x[j][2]-x[i][2]) * (x[j][2]-x[i][2])
       );
-      if (distance <= 0.01){
+      //In the case of a collision
+      if (distanceSqrd <= 0.001){
         const auto comb = mass[i]+mass[j];
         v[i][0] = mass[i]*(1/comb)*v[i][0] + mass[j]*(1/comb)*v[j][0];
         v[i][1] = mass[i]*(1/comb)*v[i][1] + mass[j]*(1/comb)*v[j][1];

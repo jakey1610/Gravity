@@ -271,12 +271,12 @@ void updateBody() {
   for (auto j=NumberOfBodies-1; j>0; --j){
     // #pragma omp parallel for schedule(dynamic,NumberOfBodies*7)
     for(auto i=0; i<j; ++i){
-      const double distance = sqrt(
+      const double distanceSqrd = (
         (x[j][0]-x[i][0]) * (x[j][0]-x[i][0]) +
         (x[j][1]-x[i][1]) * (x[j][1]-x[i][1]) +
         (x[j][2]-x[i][2]) * (x[j][2]-x[i][2])
       );
-      if (distance <= 0.01){
+      if (distanceSqrd <= 0.001){
         const auto comb = mass[i]+mass[j];
         v[i][0] = mass[i]*(1/comb)*v[i][0] + mass[j]*(1/comb)*v[j][0];
         v[i][1] = mass[i]*(1/comb)*v[i][1] + mass[j]*(1/comb)*v[j][1];
